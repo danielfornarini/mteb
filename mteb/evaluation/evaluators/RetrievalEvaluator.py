@@ -428,7 +428,7 @@ class DRESModel:
 
 
 def is_cross_encoder_compatible(model) -> bool:
-    op = getattr(model.model, "predict", None)
+    op = getattr(getattr(model, "model", None), "predict", None)
     return callable(op)
 
 

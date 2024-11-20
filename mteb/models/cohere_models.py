@@ -59,9 +59,15 @@ class CohereTextEmbeddingModel(Wrapper):
         cohere_task_type = self.get_prompt_name(
             self.model_prompts, task_name, prompt_type
         )
-        if cohere_task_type is None:
+        
+        valid_types = ["classification", "clustering", "search_document", "search_query"]
+
+        if cohere_task_type == "query":
+            cohere_task_type = "search_query"
+        elif cohere_task_type not in valid_types:
             # search_document is recommended if unknown (https://cohere.com/blog/introducing-embed-v3)
             cohere_task_type = "search_document"
+            
         return self._embed(sentences, cohere_task_type=cohere_task_type).numpy()
 
 
